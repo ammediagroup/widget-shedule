@@ -1,0 +1,103 @@
+<?php
+session_start();
+
+if(!isset($_SESSION['admin']))    {
+	header("Location: auth.php");
+};
+?>
+<!DOCTYPE HTML>
+<html>
+<head>
+<?php 
+
+include('db.php');?>
+<title>Панель Администратора</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<script language="javascript" src="http://yandex.st/jquery/1.3.2/jquery.min.js"></script>
+
+    <link media="all" rel="stylesheet" type="text/css" href="../css_block/admin.css">
+</head>
+	<body onload="load_cont(1);">
+<div class="menu">
+	<div class="item_sel" onclick="$('.item_sel').attr('class','item');$(this).attr('class','item_sel'); load_cont(1);">Институты</div>
+	<div class="item" onclick="$('.item_sel').attr('class','item');$(this).attr('class','item_sel'); load_cont(2);">Кафедры</div>
+	<div class="item" onclick="$('.item_sel').attr('class','item');$(this).attr('class','item_sel'); load_cont(3);">Группы</div>
+	
+</div>
+<div class="settings">
+<!---->
+</div>
+
+<?php 
+/**/
+?>
+<script>
+function add_ins(){
+	var name_ins=$('#name_ins').val();
+/* 	var cat = document.getElementById("sel_cat"); 
+	var cet = cat.options[cat.selectedIndex].value; */
+	$('#btn_crt').html('<img src="gif.gif">');
+	$.post("add.php?name_ins="+name_ins,ajax_ins); 
+}
+
+function add_caf(){
+	var name_caf=$('#name_caf').val();
+	var ins = document.getElementById("sel_ins"); 
+	var ins = ins.options[ins.selectedIndex].value;
+	$('#btn_crt').html('<img src="gif.gif">');
+	$.post("add_caf.php?name_caf="+name_caf+"&sys_ins="+ins,ajax_caf); 
+}
+function add_grp(){
+	var name_grp=$('#name_grp').val();
+	var caf = document.getElementById("sel_caf_grp"); 
+	var caf = caf.options[caf.selectedIndex].value;
+	$('#btn_crt').html('<img src="gif.gif">');
+	$.post("add_grp.php?name_grp="+name_grp+"&sys_caf="+caf,ajax_grp); 
+}
+function del_ins(text){
+	$.post("del.php?sys_ins="+text,ajax_ins); 
+}
+function del_caf(text){
+	$.post("del_caf.php?id="+text,ajax_caf); 
+}
+function del_grp(text){
+	$.post("del_grp.php?id="+text,ajax_grp); 
+}
+function ajax_caf(data){
+	if(data='200'){
+		load_cont(2);
+	}
+}
+function ajax_grp(data){
+	if(data='200'){
+		load_cont(3);
+	}
+}
+function ajax_ins(data){
+	if(data='200'){
+		load_cont(1);
+	}
+}
+function load_cont(int){
+switch (int) {
+case 1: var loads = 'ins';break;
+case 2: var loads = 'caf';break;
+case 3: var loads = 'grp';break;
+case 4: var loads = 'rasp';break;
+}
+	$('.settings').html('<br /><br /><br /><br /><br /><br /><br /><div style="width:100%;text-align:center;"><img src="gif.gif"></div>');
+	$('.settings').load('load.php?cat='+loads); 
+}
+function load_caf(){
+	$('#btn_crt').html('<img src="gif.gif">');
+	var ins = document.getElementById("sel_ins"); 
+	var ins = ins.options[ins.selectedIndex].value;
+	$.post("load_caf.php?&sys_ins="+ins,ajax_caf_insert);
+}
+function ajax_caf_insert(data){
+	$('#two_select').html(data);
+	$('#btn_crt').html('Добавить группу');
+}
+</script>
+</body>
+</html>

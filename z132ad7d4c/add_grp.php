@@ -1,0 +1,32 @@
+<?php 
+require_once('db.php');
+	  if($_GET['name_grp']){
+	  $name_grp=$_GET['name_grp'];
+		$kod = mt_rand(1000, 20000);
+		$sys='ras_'.$kod;
+		$sys_caf=$_GET['sys_caf'];
+		$day_week = array('pn','vt','sr','cht','pt','sbt');
+$sql = "INSERT INTO grp (name_grp, sys_caf, sys_ras) VALUES (:name, :sys_caf, :sys_ras)";
+$stmt = $db->prepare($sql);
+$stmt->bindValue(':name', $name_grp);
+$stmt->bindValue(':sys_ras', $sys);
+$stmt->bindValue(':sys_caf', $sys_caf);
+$stmt->execute();
+
+
+$sql1 = "CREATE TABLE IF NOT EXISTS ".$sys." (`id` int(9) NOT NULL AUTO_INCREMENT,`para1` varchar(255) NOT NULL,`para2` varchar(255) NOT NULL,`para3` varchar(255) NOT NULL,`para4` varchar(255) NOT NULL,`para5` varchar(255) NOT NULL,`para6` varchar(255) NOT NULL,`para1n` varchar(255) NOT NULL,`para2n` varchar(255) NOT NULL,`para3n` varchar(255) NOT NULL,`para4n` varchar(255) NOT NULL,`para5n` varchar(255) NOT NULL,`para6n` varchar(255) NOT NULL,`day_week` varchar(255) NOT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1";
+$stmt = $db->prepare($sql1);
+$stmt->execute();
+
+for ($i=0; $i<7;$i++){
+$id1=$i;
+$id=$i+1;
+$sql = "INSERT INTO ".$sys." (id,day_week) VALUES (:id,:day_week)";
+$stmt = $db->prepare($sql);
+$stmt->bindValue(':id', $id);
+$stmt->bindValue(':day_week', $day_week[$i]);
+$stmt->execute();
+}
+echo '200';
+	  };
+?>

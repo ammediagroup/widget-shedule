@@ -1,0 +1,27 @@
+<script language="javascript" src="http://yandex.st/jquery/1.3.2/jquery.min.js"></script>
+
+    <link media="all" rel="stylesheet" type="text/css" href="../css_block/admin.css">
+<?php 
+require_once('db.php');
+if($_GET['sys_ras']){
+$sql = "UPDATE ".$_GET['sys_ras']." SET para1 = :para1, para2 = :para2, para3 = :para3, para4 = :para4, para5 = :para5, para6 = :para6, para1n = :para1n, para2n = :para2n, para3n = :para3n, para4n = :para4n, para5n = :para5n, para6n = :para6n WHERE day_week = :day_week";
+$stmt = $db->prepare($sql);
+$stmt->bindValue(':para1', $_GET['para1']);
+$stmt->bindValue(':para2', $_GET['para2']);
+$stmt->bindValue(':para3', $_GET['para3']);
+$stmt->bindValue(':para4', $_GET['para4']);
+$stmt->bindValue(':para5', $_GET['para5']);
+$stmt->bindValue(':para6', $_GET['para6']);
+$stmt->bindValue(':para1n', $_GET['para1n']);
+$stmt->bindValue(':para2n', $_GET['para2n']);
+$stmt->bindValue(':para3n', $_GET['para3n']);
+$stmt->bindValue(':para4n', $_GET['para4n']);
+$stmt->bindValue(':para5n', $_GET['para5n']);
+$stmt->bindValue(':para6n', $_GET['para6n']);
+$stmt->bindValue(':day_week', $_GET['day_week']);
+
+
+$stmt->execute();
+	echo '200';
+}
+?>
